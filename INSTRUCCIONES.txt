@@ -1,58 +1,30 @@
-ACTUALIZACIÓN: REPORTES + ECONOMÍA + TRANSPARENCIA EN EL INICIO
+ACTUALIZACIÓN: CARDS VISUALES DEL INICIO
 
-Esta actualización hace que, al presionar "Ver sitio público", el inicio muestre:
+Esta actualización cambia únicamente las 3 cards del inicio:
+- Integrantes
+- Ensayos
+- Área privada
 
-1. Ingresos totales del año.
-2. Ingresos por mensualidades.
-3. Egresos totales.
-4. Balance.
-5. Resumen económico mes por mes.
-6. Estado de mensualidades de cada integrante, de enero a diciembre.
+Ahora tendrán:
+- imagen grande en la parte superior,
+- título más visible,
+- descripción,
+- botón/enlace al final,
+- estilo más visual y moderno.
 
-IMPORTANTE:
-- Los visitantes/integrantes SOLO pueden consultar.
-- NO pueden agregar, editar ni eliminar pagos o movimientos.
-- El panel administrativo sigue siendo el único lugar donde se modifican esos datos.
-- En el sitio público NO se muestran métodos de pago ni observaciones internas.
-- Este ZIP NO incluye js/config.js, así que no borra la conexión que ya hiciste con Supabase.
+IMÁGENES USADAS:
+1. Integrantes -> foto del integrante con el bombo
+2. Ensayos -> foto de la banda marchando
+3. Área privada -> foto del músico con sousafón
 
-PASO 1
-Descomprime este ZIP.
-
-PASO 2
-Copia estas carpetas/archivos sobre tu proyecto actual:
-- index.html
-- integrantes.html
-- css/
-- js/
-- admin/
-- supabase/
-
-Cuando Windows pregunte si deseas reemplazar archivos, selecciona REEMPLAZAR.
-
-PASO 3
-Ve a Supabase > SQL Editor > New query.
-
-PASO 4
-Abre en Visual Studio Code:
-supabase/migracion_reportes_economia_transparencia.sql
-
-Copia TODO, pégalo en Supabase y presiona Run.
-
-Debe aparecer:
-Success. No rows returned
-
-PASO 5
-Regresa a la página y presiona:
-Ctrl + F5
-
-En el inicio aparecerá una sección llamada:
-TRANSPARENCIA
-Reportes y economía de la banda
+CÓMO INSTALAR:
+1. Descomprime este ZIP.
+2. Copia y reemplaza dentro de tu proyecto actual los siguientes elementos:
+   - index.html
+   - css/style.css
+   - assets/img/home/
+3. Si usas GitHub, vuelve a subir esos archivos al repositorio.
+4. Actualiza la página con Ctrl + F5.
 
 NOTA:
-Si todavía no hay mensualidades o movimientos registrados, los totales aparecerán en L 0.00 y los meses como pendientes. Eso es normal.
-
-El panel administrativo también conserva:
-- Reportes
-- Economía
+Este paquete no toca js/config.js ni Supabase.
