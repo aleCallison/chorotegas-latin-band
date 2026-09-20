@@ -195,6 +195,98 @@
     location.href = location.pathname.includes("/admin/") ? "../login.html" : "login.html";
   }
 
+
+  function initHomeClock() {
+    const currentPage = location.pathname.split("/").pop() || "index.html";
+    if (currentPage !== "index.html") return;
+
+    const heroText = document.querySelector(".hero > div:first-child");
+    if (!heroText || document.getElementById("clb-live-clock")) return;
+
+    const clock = document.createElement("div");
+    clock.id = "clb-live-clock";
+    clock.className = "clb-live-clock";
+    clock.setAttribute("aria-live", "polite");
+    clock.innerHTML = `
+      <div class="clb-clock-time" data-clock-time>--:-- --</div>
+      <div class="clb-clock-date" data-clock-date>Cargando fecha…</div>
+    `;
+
+    const paragraph = heroText.querySelector("p");
+    if (paragraph) paragraph.insertAdjacentElement("afterend", clock);
+    else heroText.appendChild(clock);
+
+    if (!document.getElementById("clb-clock-styles")) {
+      const style = document.createElement("style");
+      style.id = "clb-clock-styles";
+      style.textContent = `
+        .clb-live-clock{
+          display:inline-flex;
+          flex-direction:column;
+          gap:3px;
+          margin:18px 0 4px;
+          padding:14px 18px;
+          border:1px solid rgba(105,227,77,.28);
+          border-radius:16px;
+          background:rgba(105,227,77,.055);
+          backdrop-filter:blur(8px);
+          -webkit-backdrop-filter:blur(8px);
+          min-width:240px;
+        }
+        .clb-clock-time{
+          font-size:clamp(2rem,5vw,3.35rem);
+          line-height:1;
+          font-weight:800;
+          letter-spacing:-.04em;
+          color:#fff;
+          font-variant-numeric:tabular-nums;
+        }
+        .clb-clock-date{
+          margin-top:5px;
+          font-size:.96rem;
+          color:var(--muted,#aab3ad);
+          text-transform:capitalize;
+        }
+        @media (max-width:640px){
+          .clb-live-clock{
+            width:100%;
+            min-width:0;
+            text-align:center;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    const timeEl = clock.querySelector("[data-clock-time]");
+    const dateEl = clock.querySelector("[data-clock-date]");
+
+    const timeFormatter = new Intl.DateTimeFormat("es-HN", {
+      timeZone: "America/Tegucigalpa",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true
+    });
+
+    const dateFormatter = new Intl.DateTimeFormat("es-HN", {
+      timeZone: "America/Tegucigalpa",
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+
+    function updateClock() {
+      const now = new Date();
+      timeEl.textContent = timeFormatter.format(now).replace(/\s+/g, " ").toUpperCase();
+      dateEl.textContent = dateFormatter.format(now);
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  }
+
   window.CLB = {
     client,
     configured,
@@ -217,6 +309,7 @@
 
     initMenu();
     setActiveNav();
+    initHomeClock();
 
     document.querySelectorAll("[data-logout]").forEach(btn => btn.addEventListener("click", logout));
     document.querySelectorAll("[data-year]").forEach(el => el.textContent = new Date().getFullYear());
