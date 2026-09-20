@@ -1,15 +1,24 @@
 (function () {
+  function safeReturnPath(value) {
+    if (!value) return null;
+    if (value.includes("://") || value.startsWith("//")) return null;
+    if (value.includes("..")) return null;
+    return value.replace(/^\/+/, "");
+  }
+
   async function redirectAfterLogin(user) {
     const profile = await CLB.getProfile(user.id);
-    const requested = new URLSearchParams(location.search).get("return");
+    const requested = safeReturnPath(new URLSearchParams(location.search).get("return"));
+
     if (requested) {
       location.href = requested;
       return;
     }
+
     if (profile && ["admin", "director"].includes(profile.rol)) {
       location.href = "admin/index.html";
     } else {
-      location.href = "mi-cuenta.html";
+      location.href = "index.html";
     }
   }
 
@@ -48,8 +57,10 @@
       ev.preventDefault();
       const btn = loginForm.querySelector("button[type=submit]");
       CLB.setLoading(btn, true);
+
       const email = document.getElementById("login-email").value.trim();
       const password = document.getElementById("login-password").value;
+
       const { data, error } = await CLB.client.auth.signInWithPassword({ email, password });
       CLB.setLoading(btn, false);
 
@@ -57,6 +68,7 @@
         CLB.toast(error.message, "error");
         return;
       }
+
       CLB.toast("Sesión iniciada.", "success");
       await redirectAfterLogin(data.user);
     });
@@ -65,15 +77,36 @@
       ev.preventDefault();
       const btn = registerForm.querySelector("button[type=submit]");
       CLB.setLoading(btn, true);
+
       const nombre = document.getElementById("register-name").value.trim();
       const email = document.getElementById("register-email").value.trim();
       const password = document.getElementById("register-password").value;
+      const seccion = document.getElementById("register-section").value;
+
+      const allowedSections = [
+        "Sección de Viento",
+        "Percusión",
+        "Cuadros Artísticos",
+        "Otro"
+      ];
+
+      if (!allowedSections.includes(seccion)) {
+        CLB.setLoading(btn, false);
+        CLB.toast("Selecciona una sección válida.", "error");
+        return;
+      }
 
       const { data, error } = await CLB.client.auth.signUp({
         email,
         password,
-        options: { data: { nombre } }
+        options: {
+          data: {
+            nombre,
+            seccion
+          }
+        }
       });
+
       CLB.setLoading(btn, false);
 
       if (error) {

@@ -29,7 +29,8 @@
     if (!integrante) {
       profileBox.innerHTML = `
         <div class="notice">
-          Tu cuenta todavía no está vinculada a un integrante. Un administrador puede vincularla desde
+          <strong>Sección registrada:</strong> ${CLB.escapeHTML(profile?.seccion || "Sin sección")}<br>
+          Tu cuenta todavía no está vinculada a una ficha de integrante. Un administrador puede vincularla desde
           <strong>Panel administrativo → Integrantes</strong>.
         </div>`;
       document.getElementById("attendance-list").innerHTML =

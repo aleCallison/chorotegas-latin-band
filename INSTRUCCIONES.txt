@@ -1,38 +1,74 @@
-ACTUALIZACIÓN: REPORTE DE MENSUALIDADES PÚBLICO
+ACTUALIZACIÓN: LOGIN OBLIGATORIO + SECCIÓN AL REGISTRARSE
 
-Cambios:
-- Se elimina por completo del sitio público:
-  * Ingresos totales
-  * Ingresos por mensualidades
-  * Egresos
-  * Balance
-  * Resumen económico mensual
+QUÉ CAMBIA
+- Ya no se puede navegar por Inicio, Integrantes, Eventos, Ensayos, Comunicados o Mensualidades sin iniciar sesión.
+- Si alguien intenta abrir una página directamente, será enviado a login.html.
+- Después de iniciar sesión volverá a la página solicitada.
+- En la navegación, "Ingresar" cambia a "Mi cuenta".
+- También aparece "Salir".
+- Los administradores/directores reciben además acceso al Panel.
 
-- La etiqueta "Transparencia" pasa a "Reportes".
-- El título principal pasa a "Reporte de mensualidades".
-- En el menú aparece "Mensualidades".
-- Se mantiene únicamente la tabla pública de mensualidades.
+REGISTRO
+Ahora el formulario pide:
+- Nombre
+- Correo
+- Sección
+- Contraseña
 
-NUEVAS FUNCIONES:
-- Buscar integrante por nombre.
-- Buscar por sección.
-- Ordenar A–Z.
-- Ordenar Z–A.
-- Ordenar por más meses pagados.
-- Ordenar por menos meses pagados.
-- Seleccionar el año.
+Opciones de sección:
+- Sección de Viento
+- Percusión
+- Cuadros Artísticos
+- Otro
 
-IMPORTANTE:
-- Economía y Reportes completos siguen dentro del panel administrativo.
-- No modifica Supabase.
-- No modifica js/config.js.
-- No modifica css/style.css, así conservas tus cards interactivas.
+La sección se guarda en Supabase en la tabla profiles.
 
-INSTALACIÓN:
+SEGURIDAD
+La actualización también cambia las políticas de Supabase para que los datos de:
+- Integrantes
+- Instrumentos
+- Ensayos
+- Eventos
+- Comunicados
+- Reporte público de mensualidades
+
+solo puedan consultarse con una sesión iniciada.
+
+GitHub Pages seguirá siendo un sitio estático y sus archivos HTML/CSS/JS son públicos,
+pero la información almacenada en Supabase ya no se entrega a usuarios anónimos.
+
+INSTALACIÓN
+
 1. Descomprime este ZIP.
-2. Reemplaza únicamente:
-   - index.html
-   - js/public.js
-3. Guarda.
-4. Actualiza el navegador con Ctrl + F5.
-5. Si usas GitHub Pages, sube estos dos archivos actualizados al repositorio.
+
+2. Reemplaza SOLO estos archivos en tu proyecto:
+   - login.html
+   - js/auth.js
+   - js/core.js
+   - js/member.js
+   - admin/usuarios.html
+   - admin/js/usuarios.js
+
+No reemplaces index.html, public.js ni style.css:
+así conservas exactamente tus cards, mensualidades y diseño actual.
+
+3. Ve a Supabase > SQL Editor > New query.
+
+4. Abre:
+   supabase/migracion_login_obligatorio_secciones.sql
+
+5. Copia TODO el contenido, pégalo en Supabase y presiona Run.
+
+Debe aparecer:
+Success. No rows returned
+
+6. Cierra la sesión actual y vuelve a abrir la web.
+Ahora al intentar entrar al Inicio sin sesión deberías ser enviado al Login.
+
+7. Prueba registrando una cuenta nueva.
+El formulario debe obligar a elegir una de las 3 secciones.
+
+8. Si usas GitHub Pages, sube estos archivos modificados al repositorio y espera a que GitHub vuelva a publicar.
+
+IMPORTANTE
+Esta actualización NO incluye js/config.js, así que no borra tu conexión actual con Supabase.

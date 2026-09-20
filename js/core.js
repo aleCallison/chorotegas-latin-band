@@ -8,6 +8,80 @@
 
   const monthNames = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"];
 
+
+  function isLoginPage() {
+    const page = location.pathname.split("/").pop() || "";
+    return page === "login.html";
+  }
+
+  function pageReturnPath() {
+    const parts = location.pathname.split("/").filter(Boolean);
+    const adminIndex = parts.lastIndexOf("admin");
+
+    if (adminIndex !== -1) {
+      return parts.slice(adminIndex).join("/");
+    }
+
+    return parts[parts.length - 1] || "index.html";
+  }
+
+  function loginPath() {
+    return location.pathname.includes("/admin/") ? "../login.html" : "login.html";
+  }
+
+  async function enforceGlobalLogin() {
+    if (isLoginPage()) return true;
+
+    if (!configured || !client) {
+      location.replace(loginPath());
+      return false;
+    }
+
+    const session = await getSession();
+
+    if (!session) {
+      const ret = encodeURIComponent(pageReturnPath());
+      location.replace(`${loginPath()}?return=${ret}`);
+      return false;
+    }
+
+    return true;
+  }
+
+  async function personalizePublicNav() {
+    const session = await getSession();
+    if (!session) return;
+
+    const profile = await getProfile(session.user.id);
+    const accountLink = document.querySelector(".nav-login");
+
+    if (accountLink) {
+      accountLink.textContent = "Mi cuenta";
+      accountLink.href = location.pathname.includes("/admin/") ? "../mi-cuenta.html" : "mi-cuenta.html";
+    }
+
+    const nav = document.querySelector("[data-nav]");
+    if (nav && !nav.querySelector("[data-nav-logout]")) {
+      if (profile && ["admin", "director"].includes(profile.rol) && !nav.querySelector("[data-admin-panel-link]")) {
+        const adminLink = document.createElement("a");
+        adminLink.href = "admin/index.html";
+        adminLink.textContent = "Panel";
+        adminLink.dataset.adminPanelLink = "true";
+        nav.appendChild(adminLink);
+      }
+
+      const logoutLink = document.createElement("a");
+      logoutLink.href = "#";
+      logoutLink.textContent = "Salir";
+      logoutLink.dataset.navLogout = "true";
+      logoutLink.addEventListener("click", async (ev) => {
+        ev.preventDefault();
+        await logout();
+      });
+      nav.appendChild(logoutLink);
+    }
+  }
+
   function escapeHTML(value = "") {
     return String(value)
       .replaceAll("&", "&amp;")
@@ -99,16 +173,19 @@
   }
 
   async function requireAuth() {
-    if (!configured) {
-      location.href = "login.html";
+    if (!configured || !client) {
+      location.href = loginPath();
       return null;
     }
+
     const session = await getSession();
+
     if (!session) {
-      const ret = encodeURIComponent(location.pathname.split("/").pop() || "index.html");
-      location.href = `login.html?return=${ret}`;
+      const ret = encodeURIComponent(pageReturnPath());
+      location.href = `${loginPath()}?return=${ret}`;
       return null;
     }
+
     return session;
   }
 
@@ -134,10 +211,18 @@
     logout
   };
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", async () => {
+    const allowed = await enforceGlobalLogin();
+    if (!allowed && !isLoginPage()) return;
+
     initMenu();
     setActiveNav();
+
     document.querySelectorAll("[data-logout]").forEach(btn => btn.addEventListener("click", logout));
     document.querySelectorAll("[data-year]").forEach(el => el.textContent = new Date().getFullYear());
+
+    if (!isLoginPage()) {
+      await personalizePublicNav();
+    }
   });
 })();
