@@ -306,18 +306,37 @@
       return;
     }
 
-    const { data: dues, error } = await CLB.client.rpc(
-      "estado_mensualidades_publico",
-      { p_anio: year }
-    );
+    const body = document.getElementById("public-dues-body");
+    if (body) {
+      body.innerHTML = `<tr><td colspan="14">Cargando mensualidades…</td></tr>`;
+    }
 
-    if (error) {
-      console.error(error);
+    let dues = [];
+    try {
+      const result = await CLB.client.rpc(
+        "estado_mensualidades_publico",
+        { p_anio: year }
+      );
+
+      if (result.error) throw result.error;
+      dues = result.data || [];
+    } catch (error) {
+      console.error("Error cargando mensualidades:", error);
+
       if (errorBox) {
         errorBox.innerHTML = `
           <div class="notice" style="margin-bottom:18px">
-            No se pudo cargar el reporte de mensualidades.
+            No se pudo cargar el reporte de mensualidades. Actualiza la página con Ctrl + F5.
           </div>`;
+      }
+
+      if (body) {
+        body.innerHTML = `
+          <tr>
+            <td colspan="14">
+              No se pudieron cargar las mensualidades.
+            </td>
+          </tr>`;
       }
       return;
     }
