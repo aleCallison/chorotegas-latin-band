@@ -18,10 +18,42 @@
 </header>
 
 <main>
-  <section class="page-hero"><div class="container"><span class="eyebrow">Área privada</span><h1>Hola, <span id="member-name">integrante</span></h1><p>Consulta tu perfil y tus registros de asistencia.</p>
+  <section class="page-hero"><div class="container"><span class="eyebrow">Área privada</span><h1>Hola, <span id="member-name">integrante</span></h1><p>Administra los datos básicos de tu cuenta y consulta tu información.</p>
     <div class="actions"><a id="admin-link" class="btn btn-primary hidden" href="admin/index.html">Ir al panel administrativo</a><button class="btn btn-secondary" data-logout>Cerrar sesión</button></div>
   </div></section>
   <section class="section-tight"><div class="container" id="member-content">
+
+    <div class="card" style="margin-bottom:26px">
+      <div class="section-head" style="margin-bottom:18px">
+        <div>
+          <h2>Modificar mi cuenta</h2>
+          <p>Corrige tu nombre, apellido o correo electrónico.</p>
+        </div>
+      </div>
+
+      <form id="account-form" class="grid grid-2">
+        <div class="form-group">
+          <label for="account-name">Nombre</label>
+          <input id="account-name" class="input" required maxlength="80" autocomplete="given-name">
+        </div>
+
+        <div class="form-group">
+          <label for="account-lastname">Apellido</label>
+          <input id="account-lastname" class="input" required maxlength="80" autocomplete="family-name">
+        </div>
+
+        <div class="form-group" style="grid-column:1/-1">
+          <label for="account-email">Correo electrónico</label>
+          <input id="account-email" class="input" type="email" required autocomplete="email">
+        </div>
+
+        <div style="grid-column:1/-1;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <button id="account-save" class="btn btn-primary" type="submit">Guardar cambios</button>
+          <span id="account-status" style="color:var(--muted);font-size:.9rem"></span>
+        </div>
+      </form>
+    </div>
+
     <div id="member-profile"></div>
     <div class="section-head" style="margin-top:34px"><div><h2>Mi asistencia</h2><p>Historial de ensayos registrados.</p></div></div>
     <div id="attendance-list" class="list-stack"><div class="empty-state">Cargando…</div></div>

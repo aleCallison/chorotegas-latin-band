@@ -62,7 +62,7 @@
 
     const nav = document.querySelector("[data-nav]");
     if (nav && !nav.querySelector("[data-nav-logout]")) {
-      if (profile && ["admin", "director"].includes(profile.rol) && !nav.querySelector("[data-admin-panel-link]")) {
+      if (profile && ["admin", "director", "director_banda"].includes(profile.rol) && !nav.querySelector("[data-admin-panel-link]")) {
         const adminLink = document.createElement("a");
         adminLink.href = "admin/index.html";
         adminLink.textContent = "Panel";

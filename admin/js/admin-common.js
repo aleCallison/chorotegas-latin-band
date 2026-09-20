@@ -32,21 +32,37 @@
     }
 
     const profile = await CLB.getProfile(session.user.id);
-    if (!profile || !["admin", "director"].includes(profile.rol)) {
+    if (!profile || !["admin", "director", "director_banda"].includes(profile.rol)) {
       location.href = "../mi-cuenta.html";
       return null;
     }
 
     document.querySelectorAll("[data-admin-user]").forEach(el => {
-      el.textContent = profile.nombre || session.user.email;
+      el.textContent = `${profile.nombre || ""} ${profile.apellido || ""}`.trim() || session.user.email;
     });
 
     document.querySelectorAll("[data-admin-role]").forEach(el => {
-      el.textContent = profile.rol;
+      const labels = {
+        admin: "Administrador",
+        director: "Director / Junta",
+        director_banda: "Director de la banda",
+        integrante: "Integrante"
+      };
+      el.textContent = labels[profile.rol] || profile.rol;
     });
 
     if (profile.rol !== "admin") {
       document.querySelectorAll("[data-admin-only]").forEach(el => el.classList.add("hidden"));
+    }
+
+    if (profile.rol === "director_banda") {
+      const allowedPages = new Set(["index.html", "asistencia.html", "ensayos.html"]);
+      document.querySelectorAll(".sidebar-nav a").forEach(a => {
+        const href = a.getAttribute("href");
+        if (href && !allowedPages.has(href)) {
+          a.classList.add("hidden");
+        }
+      });
     }
 
     const current = location.pathname.split("/").pop() || "index.html";

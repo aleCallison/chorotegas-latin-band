@@ -1,12 +1,5 @@
 (function () {
-  function safeReturnPath(value) {
-    if (!value) return null;
-    if (value.includes("://") || value.startsWith("//")) return null;
-    if (value.includes("..")) return null;
-    return value.replace(/^\/+/, "");
-  }
-
-  async function redirectAfterLogin(user) {
+  async function redirectAfterLogin() {
     location.href = "index.html";
   }
 
@@ -67,9 +60,16 @@
       CLB.setLoading(btn, true);
 
       const nombre = document.getElementById("register-name").value.trim();
+      const apellido = document.getElementById("register-lastname").value.trim();
       const email = document.getElementById("register-email").value.trim();
       const password = document.getElementById("register-password").value;
       const seccion = document.getElementById("register-section").value;
+
+      if (!nombre || !apellido) {
+        CLB.setLoading(btn, false);
+        CLB.toast("Nombre y apellido son obligatorios.", "error");
+        return;
+      }
 
       const allowedSections = [
         "Sección de Viento",
@@ -90,6 +90,7 @@
         options: {
           data: {
             nombre,
+            apellido,
             seccion
           }
         }

@@ -1,74 +1,78 @@
-ACTUALIZACIÓN: LOGIN OBLIGATORIO + SECCIÓN AL REGISTRARSE
+ACTUALIZACIÓN REVISADA
+CUENTAS + APELLIDOS + DIRECTOR DE LA BANDA
+SIN NOTIFICACIONES PUSH
 
-QUÉ CAMBIA
-- Ya no se puede navegar por Inicio, Integrantes, Eventos, Ensayos, Comunicados o Mensualidades sin iniciar sesión.
-- Si alguien intenta abrir una página directamente, será enviado a login.html.
-- Después de iniciar sesión volverá a la página solicitada.
-- En la navegación, "Ingresar" cambia a "Mi cuenta".
-- También aparece "Salir".
-- Los administradores/directores reciben además acceso al Panel.
+Usa este ZIP EN LUGAR del paquete anterior.
 
-REGISTRO
-Ahora el formulario pide:
+QUÉ HACE
+
+1. Registro obligatorio:
 - Nombre
+- Apellido
 - Correo
 - Sección
 - Contraseña
 
-Opciones de sección:
-- Sección de Viento
-- Percusión
-- Cuadros Artísticos
-- Otro
+2. "Mi cuenta":
+Cada persona puede corregir:
+- Nombre
+- Apellido
+- Correo
 
-La sección se guarda en Supabase en la tabla profiles.
+3. Nuevo rol interno:
+- Director de la banda
 
-SEGURIDAD
-La actualización también cambia las políticas de Supabase para que los datos de:
-- Integrantes
-- Instrumentos
+Este rol NO aparece al registrarse.
+Solo el Administrador lo asigna desde:
+Panel > Usuarios
+
+4. PERMISOS DEL DIRECTOR DE LA BANDA
+Los dos usuarios a los que les asignes este rol podrán entrar al Panel.
+
+En el menú administrativo verán:
+- Dashboard
+- Asistencia
 - Ensayos
-- Eventos
-- Comunicados
-- Reporte público de mensualidades
 
-solo puedan consultarse con una sesión iniciada.
+Podrán:
+- Crear ensayos
+- Editar ensayos
+- Eliminar ensayos
+- Seleccionar un ensayo
+- Ver la lista de integrantes
+- Marcar presente, ausente, tarde o justificado
+- Guardar/corregir asistencia
 
-GitHub Pages seguirá siendo un sitio estático y sus archivos HTML/CSS/JS son públicos,
-pero la información almacenada en Supabase ya no se entrega a usuarios anónimos.
+No podrán:
+- Cambiar usuarios o roles
+- Administrar economía
+- Administrar reportes
+- Administrar instrumentos
+- Administrar eventos
+- Administrar comunicados
+
+NO HAY NADA DE NOTIFICACIONES PUSH EN ESTE PAQUETE.
 
 INSTALACIÓN
 
-1. Descomprime este ZIP.
+Reemplaza:
+- login.html
+- mi-cuenta.html
+- js/auth.js
+- js/member.js
+- js/core.js
+- admin/js/admin-common.js
+- admin/usuarios.html
+- admin/js/usuarios.js
 
-2. Reemplaza SOLO estos archivos en tu proyecto:
-   - login.html
-   - js/auth.js
-   - js/core.js
-   - js/member.js
-   - admin/usuarios.html
-   - admin/js/usuarios.js
+Luego Supabase > SQL Editor > New query:
+abre y ejecuta:
+supabase/migracion_cuentas_apellidos_director.sql
 
-No reemplaces index.html, public.js ni style.css:
-así conservas exactamente tus cards, mensualidades y diseño actual.
+Después, desde tu cuenta Administrador:
+Panel > Usuarios
 
-3. Ve a Supabase > SQL Editor > New query.
+A los dos directores cámbiales el rol a:
+Director de la banda
 
-4. Abre:
-   supabase/migracion_login_obligatorio_secciones.sql
-
-5. Copia TODO el contenido, pégalo en Supabase y presiona Run.
-
-Debe aparecer:
-Success. No rows returned
-
-6. Cierra la sesión actual y vuelve a abrir la web.
-Ahora al intentar entrar al Inicio sin sesión deberías ser enviado al Login.
-
-7. Prueba registrando una cuenta nueva.
-El formulario debe obligar a elegir una de las 3 secciones.
-
-8. Si usas GitHub Pages, sube estos archivos modificados al repositorio y espera a que GitHub vuelva a publicar.
-
-IMPORTANTE
-Esta actualización NO incluye js/config.js, así que no borra tu conexión actual con Supabase.
+Finalmente sube los archivos modificados a GitHub y actualiza con Ctrl + F5.
