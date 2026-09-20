@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard | Administración</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin.css"></head>
+<body class="admin-body">
+<div class="admin-layout">
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="../assets/img/logo.png" alt="">
+    <div><strong>Chorotegas Latin Band</strong><span>Administración</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="index.html">▦ Dashboard</a>
+    <a href="integrantes.html">👥 Integrantes</a>
+    <a href="asistencia.html">✓ Asistencia</a>
+    <a href="ensayos.html">🎼 Ensayos</a>
+    <a href="eventos.html">🎺 Eventos</a>
+    <a href="comunicados.html">📢 Comunicados</a>
+    <a href="instrumentos.html" data-admin-only>🎷 Instrumentos</a>
+    <a href="usuarios.html" data-admin-only>🔑 Usuarios</a>
+  </nav>
+  <div class="sidebar-footer">
+    <a class="btn btn-secondary" style="width:100%;margin-bottom:8px" href="../index.html">Ver sitio público</a>
+    <button class="btn btn-danger" style="width:100%" data-logout>Cerrar sesión</button>
+  </div>
+</aside>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:10px"><button class="icon-btn mobile-admin-toggle" data-sidebar-toggle>☰</button><h1>Dashboard</h1></div>
+      <div class="admin-user"><span data-admin-user>Usuario</span><span class="tag" data-admin-role>rol</span></div>
+    </header>
+    <section class="admin-content">
+<div class="section-head"><div><h2>Resumen general</h2><p>Estado actual del sistema de la banda.</p></div></div>
+<div class="grid grid-4">
+  <div class="card stat-card"><strong id="stat-integrantes">—</strong><span>Integrantes</span></div>
+  <div class="card stat-card"><strong id="stat-ensayos">—</strong><span>Ensayos</span></div>
+  <div class="card stat-card"><strong id="stat-eventos">—</strong><span>Eventos</span></div>
+  <div class="card stat-card"><strong id="stat-comunicados">—</strong><span>Comunicados</span></div>
+</div>
+<div class="section-head" style="margin-top:34px"><div><h2>Próximos eventos</h2><p>Eventos programados desde hoy.</p></div></div>
+<div id="dashboard-events" class="list-stack"><div class="empty-state">Cargando…</div></div>
+</section>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script>
+<script src="../js/core.js"></script>
+<script src="js/admin-common.js"></script>
+<script src="js/dashboard.js"></script>
+</body></html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ingresar | Chorotegas Latin Band</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/img/logo.png" alt="Logo Chorotegas Latin Band">
+      <span class="brand-copy"><strong>CHOROTEGAS</strong><span>Latin Band</span></span>
+    </a>
+    <button class="menu-btn" data-menu-toggle aria-label="Abrir menú">☰</button>
+    <nav class="nav" data-nav>
+      <a href="index.html">Inicio</a><a href="integrantes.html">Integrantes</a><a href="eventos.html">Eventos</a><a href="ensayos.html">Ensayos</a><a href="comunicados.html">Comunicados</a>
+      <a class="nav-login" href="login.html">Ingresar</a>
+    </nav>
+  </div>
+</header>
+
+<main class="auth-shell">
+  <section class="card auth-card">
+    <img class="auth-logo" src="assets/img/logo.png" alt="Logo Chorotegas Latin Band">
+    <h1>Área privada</h1>
+    <p>Ingresa con tu cuenta o crea una nueva.</p>
+    <div id="setup-auth" class="notice info hidden">Primero conecta Supabase editando <code>js/config.js</code>. Consulta el README incluido en el proyecto.</div>
+    <div class="tabs">
+      <button id="tab-login" class="tab-btn active" type="button">Ingresar</button>
+      <button id="tab-register" class="tab-btn" type="button">Registrarme</button>
+    </div>
+    <form id="login-form" class="auth-form">
+      <div class="form-group"><label>Correo electrónico</label><input id="login-email" class="input" type="email" required autocomplete="email"></div>
+      <div class="form-group"><label>Contraseña</label><input id="login-password" class="input" type="password" required autocomplete="current-password"></div>
+      <button class="btn btn-primary" type="submit">Ingresar</button>
+    </form>
+    <form id="register-form" class="auth-form hidden">
+      <div class="form-group"><label>Nombre</label><input id="register-name" class="input" required></div>
+      <div class="form-group"><label>Correo electrónico</label><input id="register-email" class="input" type="email" required autocomplete="email"></div>
+      <div class="form-group"><label>Contraseña</label><input id="register-password" class="input" type="password" minlength="6" required autocomplete="new-password"></div>
+      <button class="btn btn-primary" type="submit">Crear cuenta</button>
+      <div class="notice">Las cuentas nuevas se crean como <strong>integrante</strong>. Un administrador puede asignar otro rol después.</div>
+    </form>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/core.js"></script>
+<script src="js/auth.js"></script>
+</body></html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Eventos | Administración</title><link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin.css"></head>
+<body class="admin-body">
+<div class="admin-layout">
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="../assets/img/logo.png" alt="">
+    <div><strong>Chorotegas Latin Band</strong><span>Administración</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="index.html">▦ Dashboard</a>
+    <a href="integrantes.html">👥 Integrantes</a>
+    <a href="asistencia.html">✓ Asistencia</a>
+    <a href="ensayos.html">🎼 Ensayos</a>
+    <a href="eventos.html">🎺 Eventos</a>
+    <a href="comunicados.html">📢 Comunicados</a>
+    <a href="instrumentos.html" data-admin-only>🎷 Instrumentos</a>
+    <a href="usuarios.html" data-admin-only>🔑 Usuarios</a>
+  </nav>
+  <div class="sidebar-footer">
+    <a class="btn btn-secondary" style="width:100%;margin-bottom:8px" href="../index.html">Ver sitio público</a>
+    <button class="btn btn-danger" style="width:100%" data-logout>Cerrar sesión</button>
+  </div>
+</aside>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:10px"><button class="icon-btn mobile-admin-toggle" data-sidebar-toggle>☰</button><h1>Eventos</h1></div>
+      <div class="admin-user"><span data-admin-user>Usuario</span><span class="tag" data-admin-role>rol</span></div>
+    </header>
+    <section class="admin-content">
+<div class="toolbar"><div><p style="margin:0;color:var(--muted)">Administra presentaciones y actividades.</p></div><button id="nuevo-evento" class="btn btn-primary" data-open-modal="evento-modal">+ Nuevo evento</button></div>
+<div class="table-wrap"><table><thead><tr><th>Evento</th><th>Fecha</th><th>Hora</th><th>Lugar</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="eventos-body"><tr><td colspan="6">Cargando…</td></tr></tbody></table></div>
+<div class="modal" id="evento-modal"><div class="modal-card"><div class="modal-head"><h2 id="evento-modal-title">Nuevo evento</h2><button class="icon-btn" data-close-modal="evento-modal">✕</button></div><div class="modal-body">
+<form id="evento-form" class="form-grid">
+<div class="form-group span-2"><label>Nombre del evento</label><input id="evento-nombre" class="input" required></div>
+<div class="form-group"><label>Fecha</label><input id="evento-fecha" class="input" type="date" required></div>
+<div class="form-group"><label>Hora</label><input id="evento-hora" class="input" type="time"></div>
+<div class="form-group span-2"><label>Lugar</label><input id="evento-lugar" class="input"></div>
+<div class="form-group span-2"><label>Descripción</label><textarea id="evento-descripcion" class="input"></textarea></div>
+<label class="span-2" style="display:flex;gap:10px;align-items:center"><input id="evento-publicado" type="checkbox" checked> Publicado</label>
+<div class="span-2 actions"><button class="btn btn-primary" type="submit">Guardar</button><button class="btn btn-secondary" type="button" data-close-modal="evento-modal">Cancelar</button></div>
+</form></div></div></div>
+</section>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script>
+<script src="../js/core.js"></script>
+<script src="js/admin-common.js"></script>
+<script src="js/eventos.js"></script>
+</body></html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reportes | Administración</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+<div class="admin-layout">
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="../assets/img/logo.png" alt="">
+    <div><strong>Chorotegas Latin Band</strong><span>Administración</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="index.html">▦ Dashboard</a>
+    <a href="integrantes.html">👥 Integrantes</a>
+    <a href="asistencia.html">✓ Asistencia</a>
+    <a href="ensayos.html">🎼 Ensayos</a>
+    <a href="eventos.html">🎺 Eventos</a>
+    <a href="comunicados.html">📢 Comunicados</a>
+    <a href="reportes.html" data-admin-only>📊 Reportes</a>
+    <a href="economia.html" data-admin-only>💰 Economía</a>
+    <a href="instrumentos.html" data-admin-only>🎷 Instrumentos</a>
+    <a href="usuarios.html" data-admin-only>🔑 Usuarios</a>
+  </nav>
+  <div class="sidebar-footer">
+    <a class="btn btn-secondary" style="width:100%;margin-bottom:8px" href="../index.html">Ver sitio público</a>
+    <button class="btn btn-danger" style="width:100%" data-logout>Cerrar sesión</button>
+  </div>
+</aside>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="icon-btn mobile-admin-toggle" data-sidebar-toggle>☰</button>
+        <h1>Reportes</h1>
+      </div>
+      <div class="admin-user"><span data-admin-user>Usuario</span><span class="tag" data-admin-role>rol</span></div>
+    </header>
+    <section class="admin-content">
+<div class="toolbar">
+  <div>
+    <h2 style="margin:0 0 6px">Mensualidades</h2>
+    <p style="margin:0;color:var(--muted)">Control anual de los meses pagados por cada integrante.</p>
+  </div>
+  <div class="actions" style="margin:0">
+    <select id="report-year" class="input" style="width:auto;min-width:120px"></select>
+    <button id="nuevo-pago" class="btn btn-primary" data-open-modal="pago-modal">+ Registrar pago</button>
+  </div>
+</div>
+
+<div class="grid grid-3" style="margin-bottom:26px">
+  <div class="card stat-card"><strong id="stat-pagos-total">L 0.00</strong><span>Total recaudado en el año</span></div>
+  <div class="card stat-card"><strong id="stat-pagos-registros">0</strong><span>Mensualidades registradas</span></div>
+  <div class="card stat-card"><strong id="stat-pagos-completos">0</strong><span>Integrantes con 12/12 meses</span></div>
+</div>
+
+<div class="panel">
+  <div class="section-head"><div><h2>Estado por integrante</h2><p>✓ indica que ese mes ya tiene un pago registrado.</p></div></div>
+  <div class="table-wrap">
+    <table>
+      <thead id="report-matrix-head"></thead>
+      <tbody id="report-matrix-body"><tr><td>Cargando…</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section-head" style="margin-top:30px"><div><h2>Historial de pagos</h2><p>Últimos registros del año seleccionado.</p></div></div>
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Integrante</th><th>Mes</th><th>Monto</th><th>Fecha de pago</th><th>Método</th><th>Acciones</th></tr></thead>
+    <tbody id="pagos-body"><tr><td colspan="6">Cargando…</td></tr></tbody>
+  </table>
+</div>
+
+<div class="modal" id="pago-modal">
+  <div class="modal-card">
+    <div class="modal-head"><h2>Registrar mensualidad</h2><button class="icon-btn" data-close-modal="pago-modal">✕</button></div>
+    <div class="modal-body">
+      <form id="pago-form" class="form-grid">
+        <div class="form-group span-2"><label>Integrante</label><select id="pago-integrante" class="input" required></select></div>
+        <div class="form-group"><label>Año</label><input id="pago-anio" class="input" type="number" min="2000" max="2100" required></div>
+        <div class="form-group"><label>Mes</label><select id="pago-mes" class="input" required></select></div>
+        <div class="form-group"><label>Monto (L)</label><input id="pago-monto" class="input" type="number" min="0" step="0.01" required></div>
+        <div class="form-group"><label>Fecha de pago</label><input id="pago-fecha" class="input" type="date" required></div>
+        <div class="form-group span-2"><label>Método de pago</label><input id="pago-metodo" class="input" placeholder="Efectivo, transferencia…"></div>
+        <div class="form-group span-2"><label>Observación</label><textarea id="pago-observacion" class="input"></textarea></div>
+        <div class="span-2 actions"><button class="btn btn-primary" type="submit">Guardar pago</button><button class="btn btn-secondary" type="button" data-close-modal="pago-modal">Cancelar</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+</section>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script>
+<script src="../js/core.js"></script>
+<script src="js/admin-common.js"></script>
+<script src="js/reportes.js"></script>
+</body>
+</html>

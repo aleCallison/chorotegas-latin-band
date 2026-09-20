@@ -1,0 +1,11 @@
+COLOCA AQUÍ LAS FOTOS PNG DE LOS INTEGRANTES.
+
+Ejemplos:
+- juan-perez.png
+- maria-lopez.png
+- saxofonista-01.png
+
+Luego, desde el panel administrativo, en el campo "Foto", puedes escribir:
+assets/img/integrantes/juan-perez.png
+
+Si no hay foto, el sistema mostrará las iniciales del integrante.
