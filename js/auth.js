@@ -7,19 +7,7 @@
   }
 
   async function redirectAfterLogin(user) {
-    const profile = await CLB.getProfile(user.id);
-    const requested = safeReturnPath(new URLSearchParams(location.search).get("return"));
-
-    if (requested) {
-      location.href = requested;
-      return;
-    }
-
-    if (profile && ["admin", "director"].includes(profile.rol)) {
-      location.href = "admin/index.html";
-    } else {
-      location.href = "index.html";
-    }
+    location.href = "index.html";
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
