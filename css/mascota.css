@@ -1,0 +1,162 @@
+/* ==========================================================
+   MASCOTA INTERACTIVA - CHOROTEGAS LATIN BAND
+   Este archivo es independiente para no alterar style.css.
+   ========================================================== */
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.hero-main-title {
+  overflow: visible;
+}
+
+.hero h1 .hero-e-seat {
+  position: relative;
+  display: inline-block;
+  color: #f5f7f5;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.hero-mascot {
+  position: absolute;
+  z-index: 8;
+  left: 62%;
+  bottom: .38em;
+  width: clamp(112px, 15vw, 175px);
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+  transform: translateX(-42%);
+  transform-origin: 50% 78%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hero-mascot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 16px rgba(0, 0, 0, .30));
+  animation: clbMascotFloat 3.2s ease-in-out infinite;
+  transform-origin: 52% 76%;
+}
+
+.hero-mascot:hover img {
+  filter:
+    drop-shadow(0 14px 20px rgba(0, 0, 0, .38))
+    drop-shadow(0 0 10px rgba(105, 227, 77, .16));
+}
+
+.hero-mascot:focus-visible {
+  border-radius: 18px;
+  outline: 3px solid var(--green, #69e34d);
+  outline-offset: 4px;
+}
+
+.hero-mascot.is-greeting img {
+  animation: clbMascotGreeting .8s cubic-bezier(.2,.8,.25,1) both;
+}
+
+.mascot-pop-message {
+  position: absolute;
+  z-index: 10;
+  left: 104%;
+  top: -1.02em;
+  width: max-content;
+  max-width: min(250px, 70vw);
+  padding: 10px 13px;
+  border: 1px solid rgba(105, 227, 77, .42);
+  border-radius: 13px;
+  background: rgba(10, 17, 12, .96);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .28);
+  color: #f4f7f4 !important;
+  font-size: clamp(.72rem, 1.5vw, .9rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px) scale(.96);
+  transition:
+    opacity .2s ease,
+    transform .2s ease,
+    visibility .2s ease;
+  pointer-events: none;
+}
+
+.mascot-pop-message.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+@keyframes clbMascotFloat {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-6px) rotate(1deg); }
+}
+
+@keyframes clbMascotGreeting {
+  0% { transform: translateY(0) rotate(0deg) scale(1); }
+  24% { transform: translateY(-9px) rotate(-4deg) scale(1.035); }
+  48% { transform: translateY(-4px) rotate(4deg) scale(1.045); }
+  72% { transform: translateY(-8px) rotate(-2deg) scale(1.025); }
+  100% { transform: translateY(0) rotate(0deg) scale(1); }
+}
+
+/* En pantallas medianas evitamos que el personaje se vuelva demasiado grande. */
+@media (max-width: 900px) {
+  .hero-mascot {
+    left: 58%;
+    bottom: .42em;
+    width: clamp(105px, 18vw, 145px);
+  }
+
+  .mascot-pop-message {
+    left: 76%;
+    top: -1.08em;
+  }
+}
+
+/* En celular sigue sentado sobre la E, pero de forma compacta. */
+@media (max-width: 640px) {
+  .hero-mascot {
+    left: 58%;
+    bottom: .43em;
+    width: clamp(92px, 27vw, 122px);
+  }
+
+  .mascot-pop-message {
+    left: 20%;
+    top: -1.32em;
+    max-width: 185px;
+    font-size: .72rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mascot img {
+    animation: none;
+  }
+
+  .hero-mascot.is-greeting img {
+    animation: none;
+  }
+
+  .mascot-pop-message {
+    transition: none;
+  }
+}

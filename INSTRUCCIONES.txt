@@ -1,78 +1,42 @@
-ACTUALIZACIÓN REVISADA
-CUENTAS + APELLIDOS + DIRECTOR DE LA BANDA
-SIN NOTIFICACIONES PUSH
+MASCOTA INTERACTIVA SOBRE LA "E" DE ARTE
 
-Usa este ZIP EN LUGAR del paquete anterior.
+Este parche coloca el muñequito de Chorotegas directamente sobre
+la letra E de "SOMOS ARTE" en la página de Inicio.
 
-QUÉ HACE
+INTERACCIÓN
+- El personaje tiene un movimiento suave mientras está en pantalla.
+- Al pasar el mouse sobre él, saluda.
+- En celular, al tocarlo, responde.
+- Cada interacción muestra uno de varios mensajes:
+  • ¡Hola! Bienvenido a Chorotegas.
+  • ¡Somos arte, somos cultura!
+  • ¡Qué alegría verte por aquí!
+  • ¡Nos vemos en el próximo ensayo!
 
-1. Registro obligatorio:
-- Nombre
-- Apellido
-- Correo
-- Sección
-- Contraseña
+NO MODIFICA
+- Supabase
+- Roles
+- Mensualidades
+- Economía
+- Reloj/fecha de js/core.js
+- css/style.css
+- js/public.js
 
-2. "Mi cuenta":
-Cada persona puede corregir:
-- Nombre
-- Apellido
-- Correo
-
-3. Nuevo rol interno:
-- Director de la banda
-
-Este rol NO aparece al registrarse.
-Solo el Administrador lo asigna desde:
-Panel > Usuarios
-
-4. PERMISOS DEL DIRECTOR DE LA BANDA
-Los dos usuarios a los que les asignes este rol podrán entrar al Panel.
-
-En el menú administrativo verán:
-- Dashboard
-- Asistencia
-- Ensayos
-
-Podrán:
-- Crear ensayos
-- Editar ensayos
-- Eliminar ensayos
-- Seleccionar un ensayo
-- Ver la lista de integrantes
-- Marcar presente, ausente, tarde o justificado
-- Guardar/corregir asistencia
-
-No podrán:
-- Cambiar usuarios o roles
-- Administrar economía
-- Administrar reportes
-- Administrar instrumentos
-- Administrar eventos
-- Administrar comunicados
-
-NO HAY NADA DE NOTIFICACIONES PUSH EN ESTE PAQUETE.
-
-INSTALACIÓN
+ARCHIVOS
 
 Reemplaza:
-- login.html
-- mi-cuenta.html
-- js/auth.js
-- js/member.js
-- js/core.js
-- admin/js/admin-common.js
-- admin/usuarios.html
-- admin/js/usuarios.js
+- index.html
 
-Luego Supabase > SQL Editor > New query:
-abre y ejecuta:
-supabase/migracion_cuentas_apellidos_director.sql
+Agrega:
+- css/mascota.css
+- js/mascota.js
+- assets/img/mascota-chorotegas.png
 
-Después, desde tu cuenta Administrador:
-Panel > Usuarios
+IMPORTANTE
+No reemplaces css/style.css ni js/core.js.
 
-A los dos directores cámbiales el rol a:
-Director de la banda
+GITHUB
+Sube los 4 archivos respetando exactamente sus carpetas.
+Después espera el despliegue de GitHub Pages y presiona Ctrl + F5.
 
-Finalmente sube los archivos modificados a GitHub y actualiza con Ctrl + F5.
+No necesitas ejecutar ningún SQL.
