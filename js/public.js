@@ -175,25 +175,116 @@
 
 
   const FINANCE_MONTHS = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-
-  function money(value) {
-    return new Intl.NumberFormat("es-HN", {
-      style: "currency",
-      currency: "HNL",
-      minimumFractionDigits: 2
-    }).format(Number(value || 0));
-  }
+  let publicDuesMembers = [];
 
   function initPublicYearSelect() {
     const select = document.getElementById("public-finance-year");
     if (!select) return;
+
     const current = new Date().getFullYear();
     select.innerHTML = "";
+
     for (let year = current; year >= current - 5; year--) {
       select.insertAdjacentHTML("beforeend", `<option value="${year}">${year}</option>`);
     }
+
     select.value = String(current);
     select.addEventListener("change", loadPublicTransparency);
+
+    document.getElementById("public-dues-search")
+      ?.addEventListener("input", renderPublicDues);
+
+    document.getElementById("public-dues-sort")
+      ?.addEventListener("change", renderPublicDues);
+  }
+
+  function getPaidCount(member) {
+    let count = 0;
+    for (let month = 1; month <= 12; month++) {
+      if (member.months.get(month) === true) count++;
+    }
+    return count;
+  }
+
+  function renderPublicDues() {
+    const body = document.getElementById("public-dues-body");
+    const head = document.getElementById("public-dues-head");
+    if (!body || !head) return;
+
+    head.innerHTML =
+      `<tr>
+        <th>Integrante</th>
+        ${FINANCE_MONTHS.map(m => `<th>${m.slice(0,3)}</th>`).join("")}
+        <th>Pagados</th>
+      </tr>`;
+
+    const search = (document.getElementById("public-dues-search")?.value || "")
+      .trim()
+      .toLocaleLowerCase("es");
+
+    const sort = document.getElementById("public-dues-sort")?.value || "name-asc";
+
+    let members = publicDuesMembers.filter(member => {
+      const text = `${member.nombre || ""} ${member.seccion || ""}`.toLocaleLowerCase("es");
+      return !search || text.includes(search);
+    });
+
+    members = [...members].sort((a, b) => {
+      if (sort === "name-desc") {
+        return (b.nombre || "").localeCompare(a.nombre || "", "es", { sensitivity: "base" });
+      }
+
+      if (sort === "paid-desc") {
+        const diff = getPaidCount(b) - getPaidCount(a);
+        return diff || (a.nombre || "").localeCompare(b.nombre || "", "es", { sensitivity: "base" });
+      }
+
+      if (sort === "paid-asc") {
+        const diff = getPaidCount(a) - getPaidCount(b);
+        return diff || (a.nombre || "").localeCompare(b.nombre || "", "es", { sensitivity: "base" });
+      }
+
+      return (a.nombre || "").localeCompare(b.nombre || "", "es", { sensitivity: "base" });
+    });
+
+    if (!members.length) {
+      body.innerHTML = `
+        <tr>
+          <td colspan="14">
+            ${search ? "No se encontraron integrantes con esa búsqueda." : "No hay integrantes activos para mostrar."}
+          </td>
+        </tr>`;
+      return;
+    }
+
+    body.innerHTML = members.map(member => {
+      let paidCount = 0;
+
+      const cells = FINANCE_MONTHS.map((_, idx) => {
+        const paid = member.months.get(idx + 1) === true;
+        if (paid) paidCount += 1;
+
+        return `
+          <td>
+            <span class="payment-mark ${paid ? "paid" : "pending"}"
+                  title="${paid ? "Pagado" : "Pendiente"}">
+              ${paid ? "✓" : "—"}
+            </span>
+          </td>`;
+      }).join("");
+
+      return `
+        <tr>
+          <td>
+            <strong>${CLB.escapeHTML(member.nombre || "")}</strong>
+            ${member.seccion
+              ? `<br><small style="color:var(--muted)">${CLB.escapeHTML(member.seccion)}</small>`
+              : ""}
+          </td>
+          ${cells}
+          <td><strong>${paidCount}/12</strong></td>
+        </tr>`;
+    }).join("");
   }
 
   async function loadPublicTransparency() {
@@ -202,92 +293,55 @@
 
     const year = Number(yearSelect.value || new Date().getFullYear());
     const errorBox = document.getElementById("public-finance-error");
+
     if (errorBox) errorBox.innerHTML = "";
 
     if (!CLB.client) {
       if (errorBox) {
-        errorBox.innerHTML = `<div class="notice info" style="margin-bottom:18px">Conecta Supabase para mostrar los reportes económicos reales.</div>`;
-      }
-      return;
-    }
-
-    const [annualResult, monthlyResult, duesResult] = await Promise.all([
-      CLB.client.rpc("resumen_anual_publico", { p_anio: year }),
-      CLB.client.rpc("resumen_economia_publica", { p_anio: year }),
-      CLB.client.rpc("estado_mensualidades_publico", { p_anio: year })
-    ]);
-
-    const error = annualResult.error || monthlyResult.error || duesResult.error;
-    if (error) {
-      console.error(error);
-      if (errorBox) {
         errorBox.innerHTML = `
-          <div class="notice" style="margin-bottom:18px">
-            La sección de transparencia todavía no está activada en Supabase.
-            Ejecuta el archivo <code>supabase/migracion_reportes_economia_transparencia.sql</code>.
+          <div class="notice info" style="margin-bottom:18px">
+            Conecta Supabase para mostrar las mensualidades reales.
           </div>`;
       }
       return;
     }
 
-    const annual = annualResult.data?.[0] || {};
-    document.getElementById("public-income-total").textContent = money(annual.ingresos_totales);
-    document.getElementById("public-dues-total").textContent = money(annual.cuotas);
-    document.getElementById("public-expense-total").textContent = money(annual.egresos);
-    document.getElementById("public-balance-total").textContent = money(annual.balance);
+    const { data: dues, error } = await CLB.client.rpc(
+      "estado_mensualidades_publico",
+      { p_anio: year }
+    );
 
-    const monthMap = new Map((monthlyResult.data || []).map(row => [Number(row.mes), row]));
-    document.getElementById("public-finance-months").innerHTML =
-      FINANCE_MONTHS.map((month, index) => {
-        const row = monthMap.get(index + 1) || {};
-        return `<tr>
-          <td><strong>${month}</strong></td>
-          <td>${money(row.mensualidades)}</td>
-          <td>${money(row.otros_ingresos)}</td>
-          <td>${money(row.egresos)}</td>
-          <td><strong>${money(row.balance)}</strong></td>
-        </tr>`;
-      }).join("");
+    if (error) {
+      console.error(error);
+      if (errorBox) {
+        errorBox.innerHTML = `
+          <div class="notice" style="margin-bottom:18px">
+            No se pudo cargar el reporte de mensualidades.
+          </div>`;
+      }
+      return;
+    }
 
-    const dues = duesResult.data || [];
     const grouped = new Map();
-    dues.forEach(row => {
+
+    (dues || []).forEach(row => {
       if (!grouped.has(row.integrante_id)) {
         grouped.set(row.integrante_id, {
+          id: row.integrante_id,
           nombre: row.nombre,
           seccion: row.seccion,
           months: new Map()
         });
       }
-      grouped.get(row.integrante_id).months.set(Number(row.mes), Boolean(row.pagado));
+
+      grouped.get(row.integrante_id).months.set(
+        Number(row.mes),
+        Boolean(row.pagado)
+      );
     });
 
-    document.getElementById("public-dues-head").innerHTML =
-      `<tr><th>Integrante</th>${FINANCE_MONTHS.map(m => `<th>${m.slice(0,3)}</th>`).join("")}<th>Pagados</th></tr>`;
-
-    const body = document.getElementById("public-dues-body");
-    if (!grouped.size) {
-      body.innerHTML = `<tr><td colspan="14">No hay integrantes activos para mostrar.</td></tr>`;
-      return;
-    }
-
-    body.innerHTML = [...grouped.values()].map(member => {
-      let paidCount = 0;
-      const cells = FINANCE_MONTHS.map((_, idx) => {
-        const paid = member.months.get(idx + 1) === true;
-        if (paid) paidCount += 1;
-        return `<td><span class="payment-mark ${paid ? "paid" : "pending"}" title="${paid ? "Pagado" : "Pendiente"}">${paid ? "✓" : "—"}</span></td>`;
-      }).join("");
-
-      return `<tr>
-        <td>
-          <strong>${CLB.escapeHTML(member.nombre || "")}</strong>
-          ${member.seccion ? `<br><small style="color:var(--muted)">${CLB.escapeHTML(member.seccion)}</small>` : ""}
-        </td>
-        ${cells}
-        <td><strong>${paidCount}/12</strong></td>
-      </tr>`;
-    }).join("");
+    publicDuesMembers = [...grouped.values()];
+    renderPublicDues();
   }
 
   async function loadPage() {

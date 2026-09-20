@@ -1,11 +1,38 @@
-CORRECCIÓN COMBINADA
+ACTUALIZACIÓN: REPORTE DE MENSUALIDADES PÚBLICO
 
-Esta versión conserva Reportes + Economía + Transparencia y añade las 3 cards con fotos.
+Cambios:
+- Se elimina por completo del sitio público:
+  * Ingresos totales
+  * Ingresos por mensualidades
+  * Egresos
+  * Balance
+  * Resumen económico mensual
 
-Copia TODO el contenido de esta carpeta sobre tu proyecto actual y elige REEMPLAZAR cuando Windows pregunte.
+- La etiqueta "Transparencia" pasa a "Reportes".
+- El título principal pasa a "Reporte de mensualidades".
+- En el menú aparece "Mensualidades".
+- Se mantiene únicamente la tabla pública de mensualidades.
 
-NO incluye js/config.js, así que tu conexión con Supabase no se borra.
+NUEVAS FUNCIONES:
+- Buscar integrante por nombre.
+- Buscar por sección.
+- Ordenar A–Z.
+- Ordenar Z–A.
+- Ordenar por más meses pagados.
+- Ordenar por menos meses pagados.
+- Seleccionar el año.
 
-Si ya ejecutaste la migración de economía/transparencia en Supabase, NO tienes que ejecutarla otra vez.
+IMPORTANTE:
+- Economía y Reportes completos siguen dentro del panel administrativo.
+- No modifica Supabase.
+- No modifica js/config.js.
+- No modifica css/style.css, así conservas tus cards interactivas.
 
-Después actualiza la web con Ctrl + F5 y vuelve a subir estos cambios a GitHub.
+INSTALACIÓN:
+1. Descomprime este ZIP.
+2. Reemplaza únicamente:
+   - index.html
+   - js/public.js
+3. Guarda.
+4. Actualiza el navegador con Ctrl + F5.
+5. Si usas GitHub Pages, sube estos dos archivos actualizados al repositorio.

@@ -17,7 +17,7 @@
     </a>
     <button class="menu-btn" data-menu-toggle aria-label="Abrir menú">☰</button>
     <nav class="nav" data-nav>
-      <a href="index.html">Inicio</a><a href="integrantes.html">Integrantes</a><a href="eventos.html">Eventos</a><a href="ensayos.html">Ensayos</a><a href="comunicados.html">Comunicados</a><a href="#transparencia">Transparencia</a>
+      <a href="index.html">Inicio</a><a href="integrantes.html">Integrantes</a><a href="eventos.html">Eventos</a><a href="ensayos.html">Ensayos</a><a href="comunicados.html">Comunicados</a><a href="#transparencia">Mensualidades</a>
       <a class="nav-login" href="login.html">Ingresar</a>
     </nav>
   </div>
@@ -70,59 +70,53 @@
   </section>
   <section class="section" id="transparencia">
     <div class="container">
+
       <div class="section-head">
         <div>
-          <span class="eyebrow">Transparencia</span>
-          <h2>Reportes y economía de la banda</h2>
-          <p>Consulta el estado de mensualidades y el resumen económico de Chorotegas Latin Band. Esta información es solo de lectura en el sitio público.</p>
-        </div>
-        <div>
-          <label for="public-finance-year" style="display:block;color:var(--muted);font-size:.82rem;margin-bottom:6px">Año</label>
-          <select id="public-finance-year" class="input" style="width:auto;min-width:120px"></select>
+          <span class="eyebrow">Reportes</span>
+          <h2>Reporte de mensualidades</h2>
+          <p>Consulta el estado de pago de cada integrante. Esta información es solo de lectura en el sitio público.</p>
         </div>
       </div>
 
       <div id="public-finance-error"></div>
 
-      <div class="grid grid-4" style="margin-bottom:24px">
-        <div class="card stat-card"><strong id="public-income-total">L 0.00</strong><span>Ingresos totales</span></div>
-        <div class="card stat-card"><strong id="public-dues-total">L 0.00</strong><span>Ingresos por mensualidades</span></div>
-        <div class="card stat-card"><strong id="public-expense-total">L 0.00</strong><span>Egresos totales</span></div>
-        <div class="card stat-card"><strong id="public-balance-total">L 0.00</strong><span>Balance</span></div>
-      </div>
-
-      <div class="card" style="margin-bottom:22px">
-        <div class="section-head" style="margin-bottom:18px">
-          <div>
-            <h2 style="font-size:1.35rem">Resumen económico mensual</h2>
-            <p>Las mensualidades forman parte de los ingresos de cada mes.</p>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Mes</th>
-                <th>Mensualidades</th>
-                <th>Otros ingresos</th>
-                <th>Egresos</th>
-                <th>Balance</th>
-              </tr>
-            </thead>
-            <tbody id="public-finance-months">
-              <tr><td colspan="5">Cargando información…</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
       <div class="card">
-        <div class="section-head" style="margin-bottom:18px">
+        <div class="section-head" style="margin-bottom:18px;align-items:flex-end">
           <div>
             <h2 style="font-size:1.35rem">Estado de mensualidades</h2>
-            <p>✓ = pagado · — = pendiente. El sitio público no permite modificar estos registros.</p>
+            <p>✓ = pagado · — = pendiente.</p>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;flex:1">
+            <div style="min-width:120px">
+              <label for="public-finance-year" style="display:block;color:var(--muted);font-size:.82rem;margin-bottom:6px">Año</label>
+              <select id="public-finance-year" class="input"></select>
+            </div>
+
+            <div style="min-width:220px;flex:1;max-width:320px">
+              <label for="public-dues-search" style="display:block;color:var(--muted);font-size:.82rem;margin-bottom:6px">Buscar</label>
+              <input
+                id="public-dues-search"
+                class="input"
+                type="search"
+                placeholder="Nombre o sección..."
+                autocomplete="off"
+              >
+            </div>
+
+            <div style="min-width:190px">
+              <label for="public-dues-sort" style="display:block;color:var(--muted);font-size:.82rem;margin-bottom:6px">Ordenar por</label>
+              <select id="public-dues-sort" class="input">
+                <option value="name-asc">Nombre A–Z</option>
+                <option value="name-desc">Nombre Z–A</option>
+                <option value="paid-desc">Más meses pagados</option>
+                <option value="paid-asc">Menos meses pagados</option>
+              </select>
+            </div>
           </div>
         </div>
+
         <div class="table-wrap">
           <table>
             <thead id="public-dues-head"></thead>
@@ -134,8 +128,9 @@
       </div>
 
       <div class="notice info" style="margin-top:18px">
-        Por privacidad, el sitio público muestra el estado de pago y los totales económicos, pero no expone métodos de pago ni observaciones internas.
+        El sitio público permite consultar las mensualidades, pero no modificar pagos ni registros.
       </div>
+
     </div>
   </section>
 
